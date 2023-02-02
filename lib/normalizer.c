@@ -1431,23 +1431,17 @@ grn_nfkc_normalize_unify_katakana_z_sounds(grn_ctx *ctx,
                                            void *user_data)
 {
   size_t char_length;
-  bool start_char;
 
   char_length = (size_t)grn_charlen_(ctx, current, end, GRN_ENC_UTF8);
-  start_char = false;
 
   *n_used_bytes = char_length;
   *n_used_characters = 1;
 
-  if (char_length == 3) {
-    /* U+30C5 KATAKANA LETTER DU */
-    /* U+30BA KATAKANA LETTER ZU */
-    start_char = 
-      (current[0] == 0xe3 && current[1] == 0x83 && current[2] == 0x85) ||
-      (current[0] == 0xe3 && current[1] == 0x82 && current[2] == 0xba);
-  }
-
-  if (start_char) {
+  if ((char_length == 3) &&
+      /* U+30C5 KATAKANA LETTER DU */
+      ((current[0] == 0xe3 && current[1] == 0x83 && current[2] == 0x85) ||
+      /* U+30BA KATAKANA LETTER ZU */
+      (current[0] == 0xe3 && current[1] == 0x82 && current[2] == 0xba))) {
     const unsigned char *next = current + char_length;
     size_t next_char_length;
 
